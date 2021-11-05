@@ -1,10 +1,9 @@
 name: Schoen deployen
 
 on:
-  push:
+  push: 
     branches: ["main"]
-    
-    
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -14,3 +13,13 @@ jobs:
     - uses: actions/setup-node@v2
     - run: npm install
     
+    - uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+          project_id: modern-tech-training-331108
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+    
+    - uses: google-github-actions/deploy-appengine@v0.4.0
+      with:
+          project_id: modern-tech-training-331108
+          deliverables: app.yaml
